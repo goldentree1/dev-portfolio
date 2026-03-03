@@ -1,6 +1,5 @@
-
-<!-- define projects to show -->
 <?php
+// Professional and personal rojects to display.
 $projects = [
     [
         "title" =>
@@ -18,5 +17,5 @@ $projects = [
     ],
 ];
 
+require "index.styles.php";
 require "index.view.php";
-

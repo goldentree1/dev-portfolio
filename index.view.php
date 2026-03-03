@@ -1,26 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-	<meta charset="UTF-8">
-	<title>EBMEDIA Web Development</title
-</head>
+<?php require "partials/head.php"; ?>
+
 <body>
 
 <main>
-    <h1><span>Elliott Brown</span> - <span>Full stack web developer</span></h1>
-    <div>
-    	<p>
-       	Hi, my name is Elliott Brown.
-       	I love programming all things web:
-            <ul>
-                <li>from frontend design, markup, styling, & scripting</li>
-                <li>backend API development & automation</li>
-                <li>all the way down to Linux, & networking.  </li>
-            </ul>
-    	</p>
+    <div class="container">
+        <h1>
+            <span class="my-name">Elliott Brown</span>
+            <!--<span class="separator">-</span>-->
+            <span class="my-job-title">[Full-stack web developer]</span>
+        </h1>
+        <p class="text-center">
+            <span>Hi, my name is Elliott Brown. I love programming all things web...</span>
+        </p>
     </div>
+
+    <ul class="my-projects">
+        <li>from frontend design, page structure & interactivity..</li>
+        <li>to backend API development & automation</li>
+        <li>all the way down to Linux, & networking.  </li>
+    </ul>
+
+    <h2>Check out a few of my creations...</h2>
     <div>
-    	<h2>Check out a few of my creations...</h2>
     	<div class="carousel">
     	    <div class="card">
                 <?php foreach ($projects as $project): ?>
