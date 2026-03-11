@@ -1,21 +1,14 @@
-<nav class="my-title shadow shadow-xl sticky">
-    <h1 class="my-title">
-       <span class="my-name">Elliott Brown</span>
-
-       <!--tailwindcss-dep-->
-       <span class="my-job-title font-mono">[<br><span class="my-job-title text-center mx-auto"> &nbsp;&nbsp;Full &nbsp;&nbsp;stack &nbsp;&nbsp;web &nbsp;&nbsp;developer</span><br>]</span>
-    </h1>
-</nav>
 <main>
     <!--TODO: HTML Semantics:: should this be h1/h2 or spans?-</span>-->
-    <!--<h1 class="my-title shadow shadow-xl">
-        <span class="my-name">Elliott Brown</span>-->
+    <!--tailwindcss-dep-->
+    <h1 class="my-title shadow shadow-xl">
+        <span class="my-name">Elliott Brown</span>
 
         <!--tailwindcss-dep-->
-        <!--<span class="my-job-title font-mono">[Full-stack web developer]</span>
-    </h1>-->
+        <span class="my-job-title font-mono">[Full-stack web developer]</span>
+    </h1>
 
-    <!--<p>
+    <p class="pt-6">
         <span class="text-center m-0-auto d-block">
             I love programming all things web:
         </span>
@@ -24,11 +17,11 @@
             <li>...backend APIs, databases & automation...</li>
             <li>...all the way down to Linux, servers & networking.</li>
         </ul>
-    </p>-->
+    </p>
 
     <h2 class="h2 text-center">Check out my work...</h2>
     <!--tailwindcss-dep-->
-    <ul class="my-projects bg-gray-200">
+    <ul class="my-projects">
         <?php foreach ($projects as $project): ?>
             <li>
                 <h3>

@@ -13,7 +13,7 @@
         max-width: 100%;
     }
 
-    p, li {
+    li {
         display: inline-block;
     }
 
