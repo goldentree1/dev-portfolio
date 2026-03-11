@@ -1,26 +1,37 @@
 <main>
     <!--TODO: HTML Semantics:: should this be h1/h2 or spans?-</span>-->
     <!--tailwindcss-dep-->
-    <h1 class="my-title shadow shadow-xl">
+    <h1 id="my-title" class="my-title">
+        <!--<a class="linked-in" href="https://www.linkedin.com/in/elliott-brown-846466191/">
+            <img src="assets/images/linkedin-icon.png" alt="LinkedIn" class="linked-in-icon">
+        </a>-->
         <span class="my-name">Elliott Brown</span>
-
         <!--tailwindcss-dep-->
         <span class="my-job-title font-mono">[Full-stack web developer]</span>
     </h1>
 
-    <p class="pt-6">
-        <span class="text-center m-0-auto d-block">
-            I love programming all things web:
+    <!-- temporarily remove this :-( its less important TODO finish it -->
+    <p class="my-paragraph text-center">
+        <span>
+            I love creating and coding all things <strong>web</strong>.<br>
+            Check out some examples of my work below..
         </span>
-        <ul class="my-skills">
-            <li>from frontend design, page structure & interactivity...</li>
-            <li>...backend APIs, databases & automation...</li>
-            <li>...all the way down to Linux, servers & networking.</li>
-        </ul>
     </p>
+    <!--<p class="my-paragraph text-center">
+        <span>
+            I love creating and coding all things web.<br>
+            I am most experienced in making web applications with <strong>NodeJS</strong>, <strong>PostgreSQL</strong> and <strong>React</strong>.<br>
+            but I am comfortable with picking up new technologies: I've been trying my hand at <strong>Go</strong> and <strong>PHP</strong> lately.<br>
+            Check out some examples of my work below...
+        </span>
+    </p>-->
+    <!--<ul class="my-skills">
+        <li>from frontend design, page structure & interactivity...</li>
+        <li>...backend APIs, databases & automation...</li>
+        <li>...all the way down to Linux, servers & networking.</li>
+    </ul>-->
 
-    <h2 class="h2 text-center">Check out my work...</h2>
-    <!--tailwindcss-dep-->
+    <!--<h2 class="text-center">Check out my work...</h2>-->
     <ul class="my-projects">
         <?php foreach ($projects as $project): ?>
             <li>
@@ -61,26 +72,24 @@
                     <?php endif; ?>
                     <p><?= $project["description"] ?></p>
                 </div>
+
+
                 <!--tailwind dependent -->
                 <div class="my-project-links">
                     <a href='<?= $project["srcUrl"] ?>'>
                         <img src='' />
                         Source Code
                     </a>
-                    <?php if (
-                        array_key_exists("siteUrl", $project) &&
-                        $project["siteUrl"]
-                    ): ?>
+                    <?php if ($project["siteUrl"] ?? null): ?>
                         <a href='<?= $project["siteUrl"] ?>'>
                             <img src='' />
                             Live Website
                         </a>
                     <?php endif; ?>
-                    <?php if (
-                        array_key_exists("downloadUrl", $project) &&
-                        $project["downloadUrl"]
-                    ): ?>
-                        <a href=''>
+                    <?php if ($project["downloadUrl"] ?? null): ?>
+                        <a href='<?= htmlspecialchars(
+                            $project["downloadUrl"],
+                        ) ?>'>
                             <img src='' />
                             Official Download Page
                         </a>
@@ -90,7 +99,7 @@
         <?php endforeach; ?>
     </ul>
     <div class="container">
-        <h2 class="h2 text-center">Get in touch</h2>
+        <h2 class="text-center">Get in touch</h2>
         <a type="email" href="mailto://elliott.b1097@gmail.com">
             Email me at elliott.b1097@gmail.com
         </a>
