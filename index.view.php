@@ -1,77 +1,125 @@
-<?php require "partials/head.php"; ?>
+<nav class="my-title shadow shadow-xl sticky">
+    <h1 class="my-title">
+       <span class="my-name">Elliott Brown</span>
 
-<body>
-
+       <!--tailwindcss-dep-->
+       <span class="my-job-title font-mono">[<br><span class="my-job-title text-center mx-auto"> &nbsp;&nbsp;Full &nbsp;&nbsp;stack &nbsp;&nbsp;web &nbsp;&nbsp;developer</span><br>]</span>
+    </h1>
+</nav>
 <main>
-    <div class="container">
-        <h1>
-            <span class="my-name">Elliott Brown</span>
-            <!--<span class="separator">-</span>-->
-            <span class="my-job-title">[Full-stack web developer]</span>
-        </h1>
-        <p class="text-center">
-            <span>Hi, my name is Elliott Brown. I love programming all things web...</span>
-        </p>
-    </div>
+    <!--TODO: HTML Semantics:: should this be h1/h2 or spans?-</span>-->
+    <!--<h1 class="my-title shadow shadow-xl">
+        <span class="my-name">Elliott Brown</span>-->
 
-    <ul class="my-projects">
-        <li>from frontend design, page structure & interactivity..</li>
-        <li>to backend API development & automation</li>
-        <li>all the way down to Linux, & networking.  </li>
-    </ul>
+        <!--tailwindcss-dep-->
+        <!--<span class="my-job-title font-mono">[Full-stack web developer]</span>
+    </h1>-->
 
-    <h2>Check out a few of my creations...</h2>
-    <div>
-    	<div class="carousel">
-    	    <div class="card">
-                <?php foreach ($projects as $project): ?>
-                    <div>
-             			<h3>
-                            <?= $project["title"] ?>
-                        </h3>
-                        <img src='<?= $project["srcUrl"] ?>' />
-              		</div>
-                    <div>
-                        <a href='<?= $project["srcUrl"] ?>'>
-                            <img src='' />
-                            Source Code
-                        </a>
-                        <?php if (
-                            array_key_exists("siteUrl", $project) &&
-                            $project["siteUrl"]
-                        ): ?>
-                            <a href=''>
-                                <img src='' />
-                                Live Website
-                            </a>
-                        <?php endif; ?>
-                        <?php if (
-                            array_key_exists("downloadUrl", $project) &&
-                            $project["downloadUrl"]
-                        ): ?>
-                            <a href=''>
-                                <img src='' />
-                                Official Download Page
-                            </a>
-                        <?php endif; ?>
-                    </div>
-                <?php endforeach; ?>
-    		</div>
-     </div>
-    </div>
-    <div>
-        <h2>Get in touch</h2>
-        <a type="email" href="mailto://elliott.b1097@gmail.com">
-            Email us at elliott.b1097@gmail.com
-        </a>
-        <span>
-            or send us a message below
+    <!--<p>
+        <span class="text-center m-0-auto d-block">
+            I love programming all things web:
         </span>
-        <form>
+        <ul class="my-skills">
+            <li>from frontend design, page structure & interactivity...</li>
+            <li>...backend APIs, databases & automation...</li>
+            <li>...all the way down to Linux, servers & networking.</li>
+        </ul>
+    </p>-->
 
+    <h2 class="h2 text-center">Check out my work...</h2>
+    <!--tailwindcss-dep-->
+    <ul class="my-projects bg-gray-200">
+        <?php foreach ($projects as $project): ?>
+            <li>
+                <h3>
+                    <?= $project["title"] ?>
+                </h3>
+                <div class="my-project-stats">
+                    <?php if (
+                        array_key_exists("employer", $project) &&
+                        $project["employer"] &&
+                        array_key_exists("employerUrl", $project) &&
+                        $project["employerUrl"]
+                    ): ?>
+                        <div>
+                            <span>
+                                Employer:
+                            </span>
+                            <a href="<?= $project[
+                                "employerUrl"
+                            ] ?>" target="_blank">
+                                <?= $project["employer"] ?>
+                            </a>
+                        </div>
+                    <?php else: ?>
+                        <span>
+                            (personal project)
+                        </span>
+                    <?php endif; ?>
+                </div>
+                <div class="my-project-content">
+                    <?php if (
+                        array_key_exists("imgUrls", $project) &&
+                        count($project["imgUrls"]) > 0
+                    ): ?>
+                        <?php foreach ($project["imgUrls"] as $imgUrl): ?>
+                            <img src='<?= $imgUrl ?>' />
+                        <?php endforeach; ?>
+                    <?php endif; ?>
+                    <p><?= $project["description"] ?></p>
+                </div>
+                <!--tailwind dependent -->
+                <div class="my-project-links">
+                    <a href='<?= $project["srcUrl"] ?>'>
+                        <img src='' />
+                        Source Code
+                    </a>
+                    <?php if (
+                        array_key_exists("siteUrl", $project) &&
+                        $project["siteUrl"]
+                    ): ?>
+                        <a href='<?= $project["siteUrl"] ?>'>
+                            <img src='' />
+                            Live Website
+                        </a>
+                    <?php endif; ?>
+                    <?php if (
+                        array_key_exists("downloadUrl", $project) &&
+                        $project["downloadUrl"]
+                    ): ?>
+                        <a href=''>
+                            <img src='' />
+                            Official Download Page
+                        </a>
+                    <?php endif; ?>
+                </div>
+            </li>
+        <?php endforeach; ?>
+    </ul>
+    <div class="container">
+        <h2 class="h2 text-center">Get in touch</h2>
+        <a type="email" href="mailto://elliott.b1097@gmail.com">
+            Email me at elliott.b1097@gmail.com
+        </a>
+        <div>
+            or use the form below
+        </div>
+        <form>
+            <div>
+                <label for="name">Name</label>
+                <input type="text" name="name" placeholder="Name" />
+            </div>
+            <div>
+                <label for="email">Email</label>
+                <input type="email" name="email" placeholder="Email" />
+            </div>
+            <div>
+                <label for="message">Message</label>
+                <textarea name="message" placeholder="Message"></textarea>
+            </div>
+            <div>
+                <button type="submit">Send</button>
+            </div>
         </form>
     </div>
 </main>
-
-</body>
-</html>

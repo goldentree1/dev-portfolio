@@ -1,13 +1,8 @@
-<?php include "includes/a_config.php"; ?>
 <!DOCTYPE html>
+<?php require "partials/head.php"; ?>
 <html>
-<head>
-	<?php include "includes/head-tag-contents.php"; ?>
-</head>
-<body>
 
-<?php include "includes/design-top.php"; ?>
-<?php include "includes/navigation.php"; ?>
+<body>
 
 <!-- Define projects to show -->
 <?php $projects = [
