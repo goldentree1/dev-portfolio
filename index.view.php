@@ -1,4 +1,7 @@
 <main>
+
+    <!--<div class="spacer-6" style="height: 6rem;"></div>-->
+
     <!--TODO: HTML Semantics:: should this be h1/h2 or spans?-</span>-->
     <!--tailwindcss-dep-->
     <h1 id="my-title" class="my-title">
@@ -10,13 +13,15 @@
         <span class="my-job-title font-mono">[Full-stack web developer]</span>
     </h1>
 
+    <!--<div class="spacer-6" style="height: 6rem;"></div>-->
+
     <!-- temporarily remove this :-( its less important TODO finish it -->
-    <p class="my-paragraph text-center">
-        <span>
+    <!--<p class="my-paragraph text-center">
             I love creating and coding all things <strong>web</strong>.<br>
             Check out some examples of my work below..
+        <span>
         </span>
-    </p>
+    </p>-->
     <!--<p class="my-paragraph text-center">
         <span>
             I love creating and coding all things web.<br>
@@ -75,7 +80,7 @@
 
 
                 <!--tailwind dependent -->
-                <div class="my-project-links">
+                <!--<div class="my-project-links">
                     <a href='<?= $project["srcUrl"] ?>'>
                         <img src='' />
                         Source Code
@@ -94,34 +99,37 @@
                             Official Download Page
                         </a>
                     <?php endif; ?>
-                </div>
+                </div>-->
             </li>
         <?php endforeach; ?>
+
     </ul>
-    <div class="container">
-        <h2 class="text-center">Get in touch</h2>
-        <a type="email" href="mailto://elliott.b1097@gmail.com">
-            Email me at elliott.b1097@gmail.com
-        </a>
-        <div>
-            or use the form below
-        </div>
-        <form>
-            <div>
-                <label for="name">Name</label>
-                <input type="text" name="name" placeholder="Name" />
-            </div>
-            <div>
-                <label for="email">Email</label>
-                <input type="email" name="email" placeholder="Email" />
-            </div>
-            <div>
-                <label for="message">Message</label>
-                <textarea name="message" placeholder="Message"></textarea>
-            </div>
-            <div>
-                <button type="submit">Send</button>
-            </div>
-        </form>
+    <div class="my-projects-scrollzone">
     </div>
 </main>
+<footer id="footer" class="footer">
+    <h2 class="text-center">Get in touch</h2>
+    <a type="email" href="mailto://elliott.b1097@gmail.com">
+        Email me at elliott.b1097@gmail.com
+    </a>
+    <div>
+        or use the form below
+    </div>
+    <form>
+        <div>
+            <label for="name">Name</label>
+            <input type="text" name="name" placeholder="Name" />
+        </div>
+        <div>
+            <label for="email">Email</label>
+            <input type="email" name="email" placeholder="Email" />
+        </div>
+        <div>
+            <label for="message">Message</label>
+            <textarea name="message" placeholder="Message"></textarea>
+        </div>
+        <div>
+            <button type="submit">Send</button>
+        </div>
+    </form>
+</footer>

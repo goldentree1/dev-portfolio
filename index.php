@@ -76,12 +76,16 @@ $projects = [
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portfolio | Elliott Brown</title>
-    <?php require "index.styles.php"; ?>
-    <!--<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>-->
+    <style>
+        <?php require "index.css"; ?>
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 
 <body>
     <?php require "index.view.php"; ?>
-    <?php require "index.scripts.php"; ?>
+    <script>
+      <?php require "index.js"; ?>
+    </script>
 </body
 </html>
