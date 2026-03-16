@@ -177,7 +177,7 @@ ul.my-projects {
     padding: 1rem 0.5rem;
     scrollbar-width: none; /* Firefox */
     /*z-index: 20;*/
-    background-color: var(--c-bg-secondary);
+    background-color: var(--color-bg-primary);
 }
 
 /* For Chrome/Safari scrollbar */

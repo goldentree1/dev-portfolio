@@ -1,5 +1,7 @@
 <main>
 
+
+
     <!--<div class="spacer-6" style="height: 6rem;"></div>-->
 
     <!--TODO: HTML Semantics:: should this be h1/h2 or spans?-</span>-->
@@ -107,7 +109,7 @@
     <div class="my-projects-scrollzone">
     </div>
 </main>
-<footer id="footer" class="footer">
+<footer class="footer">
     <h2 class="text-center">Get in touch</h2>
     <a type="email" href="mailto://elliott.b1097@gmail.com">
         Email me at elliott.b1097@gmail.com
