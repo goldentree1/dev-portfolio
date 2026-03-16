@@ -16,12 +16,12 @@
     <!--<div class="spacer-6" style="height: 6rem;"></div>-->
 
     <!-- temporarily remove this :-( its less important TODO finish it -->
-    <!--<p class="my-paragraph text-center">
+    <p class="my-paragraph text-center">
             I love creating and coding all things <strong>web</strong>.<br>
             Check out some examples of my work below..
         <span>
         </span>
-    </p>-->
+    </p>
     <!--<p class="my-paragraph text-center">
         <span>
             I love creating and coding all things web.<br>
