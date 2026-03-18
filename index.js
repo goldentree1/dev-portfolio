@@ -1,7 +1,7 @@
 // constants
 const SCROLL_TOLERANCE_COMPRESS_TITLE = 0;
-const SCROLL_TOLERANCE_HIDE_HERO_CONTENT = -80;
-const SCROLL_PROJECTS_HORIZONTAL_SCROLL_DEADZONE = 110;
+const SCROLL_TOLERANCE_HIDE_HERO_CONTENT = -50;
+const SCROLL_PROJECTS_HORIZONTAL_SCROLL_DEADZONE = 90;
 const SCROLL_PROJECTS_FADE_IN_OFFSET = 220;
 const SCROLL_PROJECTS_FADE_OUT_OFFSET = 480;
 
@@ -32,21 +32,30 @@ const fsH2 = getComputedStyle(document.documentElement).getPropertyValue(
   "--fs-h2",
 );
 
-// myProjects.addEventListener("scroll", (evt) => {
-//   const left = myProjects.scrollLeft;
-//   const top = myProjects.scrollTop;
-//   // console.log(myProjects);
-//   console.log("EVT", evt);
-//   // console.log("top:", top, "left:", left);
-// });
+myProjects.addEventListener("scroll", (evt) => {
+  const left = myProjects.scrollLeft;
+  const top = myProjects.scrollTop;
+  // console.log(myProjects);
+  console.log("EVT", evt);
+  // console.log("top:", top, "left:", left);
+});
 
-let lastScrollY = window.scrollY;
+const prev = { windowScrollY: window.scrollY };
+let reverseMapScroll = false;
+myProjects.addEventListener("scroll", (evt) => {
+  if (prev.windowScrollY === window.scrollY) {
+    reverseMapScroll = true;
+    // assume must be horizontal scroll if window scrollY hasn't changed
+  }
+  prev.windowScrollY = window.scrollY;
+});
+
 let showProjects = true;
 const fadeDuration = 300;
 
 function updateProjectsVisibility() {
   const rect = myProjectsContainer.getBoundingClientRect();
-  const scrollingDown = window.scrollY > lastScrollY;
+  const scrollingDown = window.scrollY > prev.windowScrollY;
 
   if (
     scrollingDown &&
@@ -70,37 +79,27 @@ function updateProjectsVisibility() {
     showProjects = true;
   }
 
-  lastScrollY = window.scrollY;
+  prev.windowScrollY = window.scrollY;
 }
 
-// throttle with rAF
-let ticking = false;
-window.addEventListener("scroll", () => {
-  if (!ticking) {
-    window.requestAnimationFrame(() => {
-      updateProjectsVisibility();
-      ticking = false;
-    });
-    ticking = true;
-  }
-});
-
-const prev = { windowScrollY: window.scrollY };
-let reverseMapScroll = false;
-myProjects.addEventListener("scroll", (evt) => {
-  if (prev.windowScrollY === window.scrollY) {
-    reverseMapScroll = true;
-    // assume must be horizontal scroll if window scrollY hasn't changed
-  }
-
-  prev.windowScrollY = window.scrollY;
-});
-
-// scroll handler
-document.addEventListener("scroll", (e) => {
+function updateHeroContentVisibility() {
   const scrollPos = window.scrollY;
   const rect = myProjectsScrollzone.getBoundingClientRect();
 
+  // --- fade hero content on scrolling past ---
+  if (
+    rect.top - scrollPos >
+    window.innerHeight - SCROLL_TOLERANCE_HIDE_HERO_CONTENT
+  ) {
+    heroContent.style.opacity = 100;
+  } else {
+    heroContent.style.opacity = 0;
+  }
+}
+
+function updateHeroTitles() {
+  const scrollPos = window.scrollY;
+  const rect = myProjectsScrollzone.getBoundingClientRect();
   if (
     rect.top - scrollPos >
     window.innerHeight - SCROLL_TOLERANCE_COMPRESS_TITLE
@@ -113,31 +112,21 @@ document.addEventListener("scroll", (e) => {
     titleJob.style.fontSize = "1.33rem";
     titleContainer.style.gap = "0.3rem";
   }
+}
 
-  if (
-    rect.top - scrollPos >
-    window.innerHeight - SCROLL_TOLERANCE_HIDE_HERO_CONTENT
-  ) {
-    heroContent.style.opacity = 100;
-  } else {
-    heroContent.style.opacity = 0;
-  }
-
-  // --- horizontal scroll mapping ---
+function updateVertToHorizontalProjectsScroll() {
   const maxScroll = myProjects.scrollWidth - myProjects.clientWidth;
 
   const start =
     myProjectsScrollzone.offsetTop -
     (window.innerHeight - SCROLL_PROJECTS_HORIZONTAL_SCROLL_DEADZONE);
-
   const end =
     myProjectsScrollzone.offsetTop +
     myProjectsScrollzone.offsetHeight -
-    window.innerHeight -
-    SCROLL_PROJECTS_HORIZONTAL_SCROLL_DEADZONE;
+    window.innerHeight;
 
   let progress = (window.scrollY - start) / (end - start);
-  if (progress < 0 || progress > 1) return;
+  if (progress <= 0 || progress >= 1) return;
 
   if (reverseMapScroll) {
     // Reverse mapping!! Projects has been horizontally scrolled...
@@ -149,6 +138,21 @@ document.addEventListener("scroll", (e) => {
   } else {
     progress = Math.max(0, Math.min(1, progress));
     myProjects.scrollLeft = maxScroll * progress;
+  }
+}
+
+// throttle with rAF
+let ticking = false;
+window.addEventListener("scroll", () => {
+  if (!ticking) {
+    window.requestAnimationFrame(() => {
+      updateProjectsVisibility();
+      updateHeroContentVisibility();
+      updateHeroTitles();
+      updateVertToHorizontalProjectsScroll();
+      ticking = false;
+    });
+    ticking = true;
   }
 });
 
