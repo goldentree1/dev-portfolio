@@ -32,14 +32,6 @@ const fsH2 = getComputedStyle(document.documentElement).getPropertyValue(
   "--fs-h2",
 );
 
-myProjects.addEventListener("scroll", (evt) => {
-  const left = myProjects.scrollLeft;
-  const top = myProjects.scrollTop;
-  // console.log(myProjects);
-  console.log("EVT", evt);
-  // console.log("top:", top, "left:", left);
-});
-
 const prev = { windowScrollY: window.scrollY };
 let reverseMapScroll = false;
 myProjects.addEventListener("scroll", (evt) => {
@@ -126,7 +118,7 @@ function updateVertToHorizontalProjectsScroll() {
     window.innerHeight;
 
   let progress = (window.scrollY - start) / (end - start);
-  if (progress <= 0 || progress >= 1) return;
+  if (progress < 0 || progress > 1) return;
 
   if (reverseMapScroll) {
     // Reverse mapping!! Projects has been horizontally scrolled...
@@ -136,7 +128,6 @@ function updateVertToHorizontalProjectsScroll() {
     reverseMapScroll = false; // reset before scrolling or we'll trigger loop
     window.scrollTo({ top: targetScrollY, behavior: "auto" });
   } else {
-    progress = Math.max(0, Math.min(1, progress));
     myProjects.scrollLeft = maxScroll * progress;
   }
 }

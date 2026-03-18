@@ -2,6 +2,16 @@
 
 header("Content-Type: application/json");
 
+$to = getenv("CONTACT_EMAIL");
+
+if ($to === false || trim($to) === "") {
+    http_response_code(500);
+    echo json_encode([
+        "error" => "Server misconfiguration: CONTACT_EMAIL not set",
+    ]);
+    exit();
+}
+
 // POST-only
 if ($_SERVER["REQUEST_METHOD"] !== "POST") {
     http_response_code(405);
@@ -24,8 +34,6 @@ foreach ($required as $field) {
 
 // response
 if (empty($errs)) {
-    // --- SEND MAIL ---
-    $to = "eb";
     $subject = "New contact form submission";
 
     $body =
