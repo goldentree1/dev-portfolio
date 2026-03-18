@@ -36,14 +36,6 @@
             <li></li>
             <?php foreach ($site_data["projects"] as $project): ?>
                 <li>
-
-                    <!-- TMP - from GPT -->
-                    <!--<div class="project-types">
-                        <?php foreach ($project["categories"] as $type): ?>
-                            <span class="project-type"><?= $type ?></span>
-                        <?php endforeach; ?>
-                    </div>-->
-
                     <div class="project-image">
                         <img src='<?= $project["imgs"][0] ?>' />
                         <div class="project-image-overlay">
@@ -95,37 +87,6 @@
                             </span>
                         <?php endif; ?>
                     </div>
-
-
-<!--
-                    <div>
-                        <div>
-                            <div style="display:flex; gap: 0.5rem;">
-                                <span>
-                                    Tech:
-                                </span>
-                                <ul style="display:flex; flex-wrap: wrap;  gap:0.5rem; margin-bottom:0;">
-                                    <?php foreach (
-                                        $project["tech"]["languages"]
-                                        as $tech
-                                    ): ?>
-                                        <li style="display:block;"><a href="#" target="_blank">
-                                            <?= $tech ?>
-                                        </a></li>
-                                    <?php endforeach; ?>
-                                    <?php foreach (
-                                        $project["tech"]["libs"]
-                                        as $tech
-                                    ): ?>
-                                        <li><a href="#" target="_blank">
-                                            <?= $tech ?>
-                                        </a></li>
-                                    <?php endforeach; ?>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>-->
-
 
                     <div>
                         <p>

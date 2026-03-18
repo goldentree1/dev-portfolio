@@ -245,12 +245,14 @@ form.addEventListener("submit", async (e) => {
   e.preventDefault();
   const formData = new FormData(form);
 
+  let status;
   try {
     const response = await fetch("/submit.php", {
       method: "POST",
       body: formData,
     });
-    await response.json();
+    const txt = await response.text();
+    status = response.status;
     if (response.ok) {
       form.reset();
       alert(
