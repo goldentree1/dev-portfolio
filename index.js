@@ -160,27 +160,25 @@ window.addEventListener("scroll", () => {
 const form = document.querySelector(".footer-form");
 form.addEventListener("submit", async (e) => {
   e.preventDefault();
-  const name = form.querySelector("#form-name").value;
-  const email = form.querySelector("#form-email").value;
-  const message = form.querySelector("#form-message").value;
-
   const formData = new FormData(form);
 
   try {
-    const body = JSON.stringify({ name, email, message });
-    console.log(body);
     const response = await fetch("/submit.php", {
       method: "POST",
       body: formData,
     });
-    const json = await response.json();
+    await response.json();
     if (response.ok) {
-      console.log(json);
       form.reset();
+      alert(
+        "Message sent successfully! I'll get back to you soon via email :-)",
+      );
     } else {
-      console.log(json);
+      throw new Error();
     }
   } catch (error) {
-    alert("An error occurred while sending the message.");
+    alert(
+      "An error occurred while sending the message. Please try submit the form again or contact us directly (e.g., via email).",
+    );
   }
 });

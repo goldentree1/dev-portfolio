@@ -33,8 +33,7 @@ if (empty($errs)) {
         "Email: {$data["email"]}\n\n" .
         "Message:\n{$data["message"]}\n";
 
-    $headers =
-        "From: ebwebsite@localhost\r\n" . "Reply-To: {$data["email"]}\r\n";
+    $headers = "From: webform@localhost\r\n" . "Reply-To: {$data["email"]}\r\n";
 
     $mailSent = mail($to, $subject, $body, $headers);
 
