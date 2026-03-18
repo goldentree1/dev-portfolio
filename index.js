@@ -32,16 +32,6 @@ const fsH2 = getComputedStyle(document.documentElement).getPropertyValue(
   "--fs-h2",
 );
 
-const prev = { windowScrollY: window.scrollY };
-let reverseMapScroll = false;
-myProjects.addEventListener("scroll", (evt) => {
-  if (prev.windowScrollY === window.scrollY) {
-    reverseMapScroll = true;
-    // assume must be horizontal scroll if window scrollY hasn't changed
-  }
-  prev.windowScrollY = window.scrollY;
-});
-
 let showProjects = true;
 const fadeDuration = 300;
 
@@ -118,32 +108,134 @@ function updateVertToHorizontalProjectsScroll() {
     window.innerHeight;
 
   let progress = (window.scrollY - start) / (end - start);
-  if (progress < 0 || progress > 1) return;
+  // if (progress < 0 || progress > 1) return;
+
+  console.log("update scroller");
 
   if (reverseMapScroll) {
     // Reverse mapping!! Projects has been horizontally scrolled...
     // so we will just map vertical scroll to it
+    if (progress < 0 || progress > 1) return;
     const targetScrollY =
       start + (myProjects.scrollLeft / maxScroll) * (end - start);
     reverseMapScroll = false; // reset before scrolling or we'll trigger loop
+    console.log(
+      "Reverse mapping! target:",
+      targetScrollY,
+      "current scrollY:",
+      window.scrollY,
+    );
     window.scrollTo({ top: targetScrollY, behavior: "auto" });
+    return;
+  } else {
+  }
+
+  if (progress < 0) {
+    myProjects.scrollLeft = 0;
+  } else if (progress > 1) {
+    myProjects.scrollLeft = maxScroll;
   } else {
     myProjects.scrollLeft = maxScroll * progress;
   }
 }
+// --- state
+const prev = {
+  windowScrollY: window.scrollY,
+  scrollLeftH: myProjects.scrollLeft,
+};
+let reverseMapScroll = false;
 
-// throttle with rAF
-let ticking = false;
+// --- horizontal scroll listener just sets a flag
+// myProjects.addEventListener("scroll", () => {
+//   // Only mark reverseMapScroll if user moved horizontally and vertical scroll is stationary
+//   if (window.scrollY === prev.windowScrollY) {
+//     reverseMapScroll = true;
+//     console.log("setr");
+//   }
+// });
+
+myProjects.addEventListener("scroll", () => {
+  const horizontalChange = Math.abs(myProjects.scrollLeft - prev.scrollLeftH);
+
+  // only mark reverse mapping if horizontal moved significantly and vertical is stationary
+  if (horizontalChange > 1 && window.scrollY - prev.windowScrollY < 1) {
+    reverseMapScroll = true;
+    console.log("reverseMapScroll set");
+  }
+});
+
+// --- rAF throttled scroll
+let tickingEffects = false;
+let tickingHScroller = false;
+
 window.addEventListener("scroll", () => {
-  if (!ticking) {
+  // --- visual updates (fade / hero / titles)
+  if (!tickingEffects) {
     window.requestAnimationFrame(() => {
       updateProjectsVisibility();
       updateHeroContentVisibility();
       updateHeroTitles();
-      updateVertToHorizontalProjectsScroll();
-      ticking = false;
+      tickingEffects = false;
     });
-    ticking = true;
+    tickingEffects = true;
+  }
+
+  if (!tickingHScroller) {
+    window.requestAnimationFrame(() => {
+      // console.log("PREV", prev.windowScrollY, "NOW", window.scrollY);
+      const maxScroll = myProjects.scrollWidth - myProjects.clientWidth;
+
+      const start =
+        myProjectsScrollzone.offsetTop -
+        (window.innerHeight - SCROLL_PROJECTS_HORIZONTAL_SCROLL_DEADZONE);
+      const end =
+        myProjectsScrollzone.offsetTop +
+        myProjectsScrollzone.offsetHeight -
+        window.innerHeight;
+
+      // console.log(
+      //   // "window.scrollY",
+      //   // window.scrollY,
+      //   // "offsetTop(proj)",
+      //   // myProjectsContainer.offsetTop,
+      //   // "offsetHeight",
+      //   // myProjectsContainer.offsetHeight,
+      //   "scrollTop",
+      //   myProjectsContainer.scrollTop,
+      //   // "diff",
+      //   // end - start,
+      //   // "diff2",
+      //   // Math.abs(
+      //   //   myProjectsContainer.offsetHeight - myProjectsContainer.offsetTop,
+      //   // ),
+      //   // "scrollLeft",
+      //   // myProjects.scrollLeft,
+      //   // "maxScroll",
+      //   // maxScroll,
+      // );
+
+      let progress = (window.scrollY - start) / (end - start);
+      progress = Math.min(Math.max(progress, 0), 1);
+
+      if (progress >= 1 || progress <= 0) {
+        reverseMapScroll = true;
+      } else if (reverseMapScroll) {
+        // projects horizontal scroll -> page scroll
+        const targetScrollY =
+          start + (myProjects.scrollLeft / maxScroll) * (end - start);
+        window.scrollTo({ top: targetScrollY, behavior: "auto" });
+        reverseMapScroll = false;
+      } else {
+        // map projects horizontal scroll -> page scroll
+        myProjects.scrollLeft = maxScroll * progress;
+      }
+
+      prev.windowScrollY = window.scrollY;
+      prev.scrollLeftH = myProjects.scrollLeft;
+
+      tickingHScroller = false;
+    });
+    tickingHScroller = true;
   }
 });
 
