@@ -24,8 +24,27 @@ foreach ($required as $field) {
 
 // response
 if (empty($errs)) {
-    http_response_code(200);
-    echo json_encode(["message" => "ok"]);
+    // --- SEND MAIL ---
+    $to = "eb";
+    $subject = "New contact form submission";
+
+    $body =
+        "Name: {$data["name"]}\n" .
+        "Email: {$data["email"]}\n\n" .
+        "Message:\n{$data["message"]}\n";
+
+    $headers =
+        "From: ebwebsite@localhost\r\n" . "Reply-To: {$data["email"]}\r\n";
+
+    $mailSent = mail($to, $subject, $body, $headers);
+
+    if ($mailSent) {
+        http_response_code(200);
+        echo json_encode(["message" => "ok"]);
+    } else {
+        http_response_code(500);
+        echo json_encode(["error" => "Failed to send email"]);
+    }
 } else {
     http_response_code(400);
     echo json_encode(["error" => $errs]);
