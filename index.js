@@ -1,59 +1,182 @@
 // constants
-const SCROLL_TOLERANCE = 50;
+const SCROLL_TOLERANCE_COMPRESS_TITLE = 0;
+const SCROLL_TOLERANCE_HIDE_HERO_CONTENT = -80;
+const SCROLL_PROJECTS_HORIZONTAL_SCROLL_DEADZONE = 110;
+const SCROLL_PROJECTS_FADE_IN_OFFSET = 220;
+const SCROLL_PROJECTS_FADE_OUT_OFFSET = 480;
 
 // HTML elements
-const titleName = document.querySelector(".my-title span.my-name");
-const titleJob = document.querySelector(".my-title span.my-job-title");
+const titleContainer = document.querySelector(".hero-title");
+const titleName = document.querySelector(".hero-title h1");
+const titleJob = document.querySelector(".hero-title h2");
+const heroContent = document.querySelector(".hero-content");
+
+const myProjectsContainer = document.querySelector(".my-projects-container");
 const myProjects = document.querySelector(".my-projects");
+const myProjectsTitle = document.querySelector(".my-projects > li:first-child");
 const myProjectsScrollzone = document.querySelector(".my-projects-scrollzone");
 
+const footer = document.querySelector("footer");
+
 // CSS variables
-const fsTitleName = getComputedStyle(document.documentElement).getPropertyValue(
-  "--fs-title-name",
+const colourBgPrimary = getComputedStyle(
+  document.documentElement,
+).getPropertyValue("--colour-bg-primary");
+const colourBgSecondary = getComputedStyle(
+  document.documentElement,
+).getPropertyValue("--colour-bg-secondary");
+const fsH1 = getComputedStyle(document.documentElement).getPropertyValue(
+  "--fs-h1",
 );
-const fsTitleJob = getComputedStyle(document.documentElement).getPropertyValue(
-  "--fs-title-job",
+const fsH2 = getComputedStyle(document.documentElement).getPropertyValue(
+  "--fs-h2",
 );
+
+// myProjects.addEventListener("scroll", (evt) => {
+//   const left = myProjects.scrollLeft;
+//   const top = myProjects.scrollTop;
+//   // console.log(myProjects);
+//   console.log("EVT", evt);
+//   // console.log("top:", top, "left:", left);
+// });
+
+let lastScrollY = window.scrollY;
+let showProjects = true;
+const fadeDuration = 300;
+
+function updateProjectsVisibility() {
+  const rect = myProjectsContainer.getBoundingClientRect();
+  const scrollingDown = window.scrollY > lastScrollY;
+
+  if (
+    scrollingDown &&
+    showProjects &&
+    rect.top < -SCROLL_PROJECTS_FADE_IN_OFFSET
+  ) {
+    // fade out
+    myProjectsContainer.style.transition = `background ${fadeDuration}ms, opacity ${fadeDuration}ms`;
+    myProjectsContainer.style.background = colourBgPrimary;
+    myProjects.style.opacity = 0;
+    showProjects = false;
+  } else if (
+    !scrollingDown &&
+    !showProjects &&
+    rect.top > -SCROLL_PROJECTS_FADE_OUT_OFFSET
+  ) {
+    // fade in
+    myProjectsContainer.style.transition = `background ${fadeDuration}ms, opacity ${fadeDuration}ms`;
+    myProjectsContainer.style.background = colourBgSecondary;
+    myProjects.style.opacity = 1;
+    showProjects = true;
+  }
+
+  lastScrollY = window.scrollY;
+}
+
+// throttle with rAF
+let ticking = false;
+window.addEventListener("scroll", () => {
+  if (!ticking) {
+    window.requestAnimationFrame(() => {
+      updateProjectsVisibility();
+      ticking = false;
+    });
+    ticking = true;
+  }
+});
+
+const prev = { windowScrollY: window.scrollY };
+let reverseMapScroll = false;
+myProjects.addEventListener("scroll", (evt) => {
+  if (prev.windowScrollY === window.scrollY) {
+    reverseMapScroll = true;
+    // assume must be horizontal scroll if window scrollY hasn't changed
+  }
+
+  prev.windowScrollY = window.scrollY;
+});
 
 // scroll handler
-document.addEventListener("scroll", () => {
+document.addEventListener("scroll", (e) => {
   const scrollPos = window.scrollY;
-
-  // scroll the projects cards horizontally in the dead vertical scroll-zone (position:sticky; + 100vh spacer)
   const rect = myProjectsScrollzone.getBoundingClientRect();
+
+  if (
+    rect.top - scrollPos >
+    window.innerHeight - SCROLL_TOLERANCE_COMPRESS_TITLE
+  ) {
+    titleName.style.fontSize = fsH1;
+    titleJob.style.fontSize = fsH2;
+    titleContainer.style.gap = "1.1rem";
+  } else {
+    titleName.style.fontSize = "3.2rem";
+    titleJob.style.fontSize = "1.33rem";
+    titleContainer.style.gap = "0.3rem";
+  }
+
+  if (
+    rect.top - scrollPos >
+    window.innerHeight - SCROLL_TOLERANCE_HIDE_HERO_CONTENT
+  ) {
+    heroContent.style.opacity = 100;
+  } else {
+    heroContent.style.opacity = 0;
+  }
+
+  // --- horizontal scroll mapping ---
   const maxScroll = myProjects.scrollWidth - myProjects.clientWidth;
 
-  let percent;
-  if (rect.y <= window.innerHeight && rect.y >= 0) {
-    percent = (rect.y / window.innerHeight) * 100; // map scroll
-  } else if (rect.y > window.innerHeight) {
-    percent = 100; // after, scroll to end
-  } else if (rect.y < 0) {
-    percent = 0; // before, scroll to start
-  }
+  const start =
+    myProjectsScrollzone.offsetTop -
+    (window.innerHeight - SCROLL_PROJECTS_HORIZONTAL_SCROLL_DEADZONE);
 
-  console.log("RECT:", rect);
-  console.log("scrollPos:", scrollPos);
-  console.log("innerHeight:", window.innerHeight);
-  if (rect.top - scrollPos > window.innerHeight - SCROLL_TOLERANCE) {
-    console.log("IF:: rect.top - scrollPos:", rect.top - scrollPos);
-    titleName.style.fontSize = fsTitleName;
-    titleJob.style.fontSize = fsTitleJob;
+  const end =
+    myProjectsScrollzone.offsetTop +
+    myProjectsScrollzone.offsetHeight -
+    window.innerHeight -
+    SCROLL_PROJECTS_HORIZONTAL_SCROLL_DEADZONE;
+
+  let progress = (window.scrollY - start) / (end - start);
+  if (progress < 0 || progress > 1) return;
+
+  if (reverseMapScroll) {
+    // Reverse mapping!! Projects has been horizontally scrolled...
+    // so we will just map vertical scroll to it
+    const targetScrollY =
+      start + (myProjects.scrollLeft / maxScroll) * (end - start);
+    reverseMapScroll = false; // reset before scrolling or we'll trigger loop
+    window.scrollTo({ top: targetScrollY, behavior: "auto" });
   } else {
-    console.log("ELSE:: rect.top - scrollPos:", rect.top - scrollPos);
-    titleName.style.fontSize = "3.6rem";
-    titleJob.style.fontSize = "1.33rem";
+    progress = Math.max(0, Math.min(1, progress));
+    myProjects.scrollLeft = maxScroll * progress;
   }
+});
 
-  const val = maxScroll * (1 - percent / 100);
-  myProjects.scrollLeft = val;
+/**--- Form submission handling ---*/
+const form = document.querySelector(".footer-form");
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const name = form.querySelector("#form-name").value;
+  const email = form.querySelector("#form-email").value;
+  const message = form.querySelector("#form-message").value;
 
-  // h1 title (get small on scroll page)
-  // if (scrollPos < 50) {
-  //   titleName.style.fontSize = fsTitleName;
-  //   titleJob.style.fontSize = fsTitleJob;
-  // } else {
-  //   titleName.style.fontSize = "3.6rem";
-  //   titleJob.style.fontSize = "1.33rem";
-  // }
+  const formData = new FormData(form);
+
+  try {
+    const body = JSON.stringify({ name, email, message });
+    console.log(body);
+    const response = await fetch("/submit.php", {
+      method: "POST",
+      body: formData,
+    });
+    const json = await response.json();
+    if (response.ok) {
+      console.log(json);
+      form.reset();
+    } else {
+      console.log(json);
+    }
+  } catch (error) {
+    alert("An error occurred while sending the message.");
+  }
 });

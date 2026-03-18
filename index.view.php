@@ -1,137 +1,217 @@
 <main>
-
-
-
-    <!--<div class="spacer-6" style="height: 6rem;"></div>-->
-
-    <!--TODO: HTML Semantics:: should this be h1/h2 or spans?-</span>-->
-    <!--tailwindcss-dep-->
-    <h1 id="my-title" class="my-title">
-        <!--<a class="linked-in" href="https://www.linkedin.com/in/elliott-brown-846466191/">
-            <img src="assets/images/linkedin-icon.png" alt="LinkedIn" class="linked-in-icon">
-        </a>-->
-        <span class="my-name">Elliott Brown</span>
-        <!--tailwindcss-dep-->
-        <span class="my-job-title font-mono">[Full-stack web developer]</span>
-    </h1>
-
-    <!--<div class="spacer-6" style="height: 6rem;"></div>-->
-
-    <!-- temporarily remove this :-( its less important TODO finish it -->
-    <p class="my-paragraph text-center">
-            I love creating and coding all things <strong>web</strong>.<br>
-            Check out some examples of my work below..
-        <span>
-        </span>
-    </p>
-    <!--<p class="my-paragraph text-center">
-        <span>
-            I love creating and coding all things web.<br>
-            I am most experienced in making web applications with <strong>NodeJS</strong>, <strong>PostgreSQL</strong> and <strong>React</strong>.<br>
-            but I am comfortable with picking up new technologies: I've been trying my hand at <strong>Go</strong> and <strong>PHP</strong> lately.<br>
-            Check out some examples of my work below...
-        </span>
-    </p>-->
-    <!--<ul class="my-skills">
-        <li>from frontend design, page structure & interactivity...</li>
-        <li>...backend APIs, databases & automation...</li>
-        <li>...all the way down to Linux, servers & networking.</li>
-    </ul>-->
-
-    <!--<h2 class="text-center">Check out my work...</h2>-->
-    <ul class="my-projects">
-        <?php foreach ($projects as $project): ?>
-            <li>
-                <h3>
-                    <?= $project["title"] ?>
-                </h3>
-                <div class="my-project-stats">
-                    <?php if (
-                        array_key_exists("employer", $project) &&
-                        $project["employer"] &&
-                        array_key_exists("employerUrl", $project) &&
-                        $project["employerUrl"]
-                    ): ?>
-                        <div>
-                            <span>
-                                Employer:
-                            </span>
-                            <a href="<?= $project[
-                                "employerUrl"
-                            ] ?>" target="_blank">
-                                <?= $project["employer"] ?>
-                            </a>
-                        </div>
-                    <?php else: ?>
-                        <span>
-                            (personal project)
-                        </span>
-                    <?php endif; ?>
-                </div>
-                <div class="my-project-content">
-                    <?php if (
-                        array_key_exists("imgUrls", $project) &&
-                        count($project["imgUrls"]) > 0
-                    ): ?>
-                        <?php foreach ($project["imgUrls"] as $imgUrl): ?>
-                            <img src='<?= $imgUrl ?>' />
-                        <?php endforeach; ?>
-                    <?php endif; ?>
-                    <p><?= $project["description"] ?></p>
-                </div>
-
-
-                <!--tailwind dependent -->
-                <!--<div class="my-project-links">
-                    <a href='<?= $project["srcUrl"] ?>'>
-                        <img src='' />
-                        Source Code
+    <header>
+        <nav>
+            <div class="left-links">
+                <li>
+                    <a href="<?= $site_data["github"] ?>" target="_blank">
+                        <img src="/assets/imgs/github.svg" alt="Github">
+                        <span>Github</span>
                     </a>
-                    <?php if ($project["siteUrl"] ?? null): ?>
-                        <a href='<?= $project["siteUrl"] ?>'>
-                            <img src='' />
-                            Live Website
-                        </a>
-                    <?php endif; ?>
-                    <?php if ($project["downloadUrl"] ?? null): ?>
-                        <a href='<?= htmlspecialchars(
-                            $project["downloadUrl"],
-                        ) ?>'>
-                            <img src='' />
-                            Official Download Page
-                        </a>
-                    <?php endif; ?>
-                </div>-->
+                </li>
+                <li>
+                    <a href="<?= $site_data["linkedIn"] ?>" target="_blank">
+                        <img src="/assets/imgs/linkedin-blue.png" alt="LinkedIn">
+                        <span>LinkedIn</span>
+                    </a>
+                </li>
+            </div>
+            <li>
+                <a class="btn-outline" href="#contact">Contact</a>
             </li>
-        <?php endforeach; ?>
+        </nav>
+    </header>
 
-    </ul>
-    <div class="my-projects-scrollzone">
+
+    <div class="hero-title">
+        <h1>Elliott Brown</h1>
+        <h2>[web developer / software engineer]</h2>
+        <p class="hero-content">
+            Hi, I'm Elliott — a New Zealand-based software engineer focused on web technologies, scripting, and Linux systems.
+        </p>
     </div>
+
+    <div class="my-projects-container">
+        <ul class="my-projects">
+            <li><h2>Work &<br>Projects:</h2></li>
+            <li></li>
+            <?php foreach ($site_data["projects"] as $project): ?>
+                <li>
+
+                    <!-- TMP - from GPT -->
+                    <!--<div class="project-types">
+                        <?php foreach ($project["categories"] as $type): ?>
+                            <span class="project-type"><?= $type ?></span>
+                        <?php endforeach; ?>
+                    </div>-->
+
+                    <div class="project-image">
+                        <img src='<?= $project["imgs"][0] ?>' />
+                        <div class="project-image-overlay">
+                            <div>
+                                <a href="<?= $project[
+                                    "src"
+                                ] ?>" target="_blank">
+                                    Source Code
+                                </a>
+                            </div>
+                            <?php if (isset($project["dist"])): ?>
+                                <div>
+                                    <a href="<?= $project[
+                                        "dist"
+                                    ] ?>" target="_blank">
+                                        Live Website
+                                    </a>
+                                </div>
+                            <?php endif; ?>
+                            <?php if (isset($project["download"])): ?>
+                                <div>
+                                    <a href="<?= $project[
+                                        "download"
+                                    ] ?>" target="_blank">
+                                        Official Download Page
+                                    </a>
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                    </div>
+
+                    <h3>
+                        <?= $project["title"] ?>
+                    </h3>
+
+                    <div class="project-context">
+                        <?php if (isset($project["employer"])): ?>
+                            <span class="project-meta-muted">Employer:</span>
+                            <a href="<?= $project["employer"][
+                                "url"
+                            ] ?>" target="_blank">
+                                <?= $project["employer"]["title"] ?>
+                            </a>
+                        <?php else: ?>
+                            <span class="project-meta-muted">
+                                <?= $project["type"] === "open-source"
+                                    ? "(Open-source project)"
+                                    : "(Personal project)" ?>
+                            </span>
+                        <?php endif; ?>
+                    </div>
+
+
+<!--
+                    <div>
+                        <div>
+                            <div style="display:flex; gap: 0.5rem;">
+                                <span>
+                                    Tech:
+                                </span>
+                                <ul style="display:flex; flex-wrap: wrap;  gap:0.5rem; margin-bottom:0;">
+                                    <?php foreach (
+                                        $project["tech"]["languages"]
+                                        as $tech
+                                    ): ?>
+                                        <li style="display:block;"><a href="#" target="_blank">
+                                            <?= $tech ?>
+                                        </a></li>
+                                    <?php endforeach; ?>
+                                    <?php foreach (
+                                        $project["tech"]["libs"]
+                                        as $tech
+                                    ): ?>
+                                        <li><a href="#" target="_blank">
+                                            <?= $tech ?>
+                                        </a></li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>-->
+
+
+                    <div>
+                        <p>
+                            <?= $project["description"] ?>
+                        </p>
+                    </div>
+
+                    <div class="project-tech-inline">
+                        <?php
+                        $allTech = array_merge(
+                            $project["tech"]["languages"],
+                            $project["tech"]["libs"],
+                        );
+                        foreach ($allTech as $i => $tech): ?>
+                            <span class="tech"><?= $tech ?></span><?= $i <
+count($allTech) - 1
+    ? ","
+    : "" ?>
+                        <?php endforeach;
+                        ?>
+                    </div>
+                </li>
+            <?php endforeach; ?>
+
+            <li>
+                <div style="margin: auto;">
+                    <a style="display: flex; align-items: center; gap: 1.1rem;" href="<?= $site_data[
+                        "github"
+                    ] ?>" target="_blank">
+                        <img style="width: 5rem;" src="/assets/imgs/github.svg" alt="Github">
+                        <span>See more on my Github<br>&nbsp;&nbsp;&nbsp;--------------></span>
+                    </a>
+                </div>
+            </li>
+            <li></li>
+        </ul>
+    </div>
+    <div class="my-projects-scrollzone"></div>
 </main>
-<footer class="footer">
-    <h2 class="text-center">Get in touch</h2>
-    <a type="email" href="mailto://elliott.b1097@gmail.com">
-        Email me at elliott.b1097@gmail.com
-    </a>
-    <div>
-        or use the form below
+
+<footer id="contact" class="footer">
+
+    <h2>Get in touch</h2>
+    <p>I am currently looking for full-time or freelance work!</p>
+
+    <div class="footer-body">
+        <div class="footer-links-container">
+            <ul class="footer-links">
+                <li>
+                    <a href="<?= $site_data["github"] ?>" target="_blank">
+                        <img src="/assets/imgs/github.svg" alt="Github">
+                        <span>Github</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="<?= $site_data["linkedIn"] ?>" target="_blank">
+                        <img src="/assets/imgs/linkedin-blue.png" alt="LinkedIn">
+                        <span>LinkedIn</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="mailto:<?= $site_data["email"] ?>">
+                        <img src="/assets/imgs/email.svg" alt="Email">
+                        <span><?= $site_data["email"] ?></span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <form action="submit.php" method="POST" class="footer-form">
+            <div class="form-row">
+                <label for="form-name">Name</label>
+                <input id="form-name" type="text" name="name" placeholder="Name" required>
+            </div>
+            <div class="form-row">
+                <label for="form-email">Email</label>
+                <input id="form-email" type="email" name="email" placeholder="Email" required>
+            </div>
+            <div class="form-row">
+                <label for="form-message">Message</label>
+                <textarea id="form-message" name="message" placeholder="Message" required></textarea>
+            </div>
+            <div class="btn-box">
+                <button class="btn-outline" type="submit">Send Message</button>
+            </div>
+        </form>
     </div>
-    <form>
-        <div>
-            <label for="name">Name</label>
-            <input type="text" name="name" placeholder="Name" />
-        </div>
-        <div>
-            <label for="email">Email</label>
-            <input type="email" name="email" placeholder="Email" />
-        </div>
-        <div>
-            <label for="message">Message</label>
-            <textarea name="message" placeholder="Message"></textarea>
-        </div>
-        <div>
-            <button type="submit">Send</button>
-        </div>
-    </form>
+
 </footer>

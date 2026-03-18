@@ -1,54 +1,76 @@
 <?php
-// Professional and personal projects to display.
-$projects = [
-    [
-        "title" => "Genome Browser for Pletzer Lab",
-        "employer" => "University of Otago (Microbiology Dept.)",
-        "employerUrl" => "https://pletzerlab.com",
-        "imgUrls" => ["/imgs/pletzer-lab-genome-browser-screenshot.png"],
-        "description" => "
-            An interactive genome browser web-app and associated data-processing pipeline made for Pletzer Lab (University of Otago).
-            Researchers use it to visually analyse and compare the lab's bacterial experiments in an easy-to-use web interface.
-            This allows quick identification of differences between bacterial strains through gene expression patterns and
-            also provides detailed genomic information. It can be re-built by the lab whenever new data becomes available.
-        ",
-        "programmingLangs" => ["TypeScript", "Bash", "Python", "HTML/CSS"],
-        "programmingLibs" => [
-            "React",
-            "Vite",
-            "Bioinformatics Tools (samtools, bedtools, deeptools, agat)",
-            "WordPress",
+
+$site_data = [
+    "title" => "Portfolio | Elliott Brown",
+    "email" => "elliott.b1097@gmail.com",
+    "linkedIn" => "https://www.linkedin.com/in/elliott-brown-846466191/",
+    "github" => "https://github.com/goldentree1",
+    "projects" => [
+        [
+            "title" => "Pletzer Lab Genome Browser",
+            "type" => "work",
+            "categories" => ["website", "data-processing"],
+            "employer" => [
+                "title" => "University of Otago (Microbiology Dept.)",
+                "url" => "https://www.otago.ac.nz/microbiology-and-immunology",
+            ],
+            "imgs" => ["assets/imgs/plgb-relA-full.png"],
+            "description" => "React web-app that allows researchers to analyse and compare genomic data from Pletzer Lab's microbiology research.
+                A static site: it can be rebuilt/deployed with new genomic data via a Bash/Python data-processing script.",
+            "src" =>
+                "https://github.com/goldentree1/pletzer-lab-genome-browser",
+            "dist" => "https://pletzerlab.com/genome-browser",
+            "tech" => [
+                "languages" => ["Typescript", "Bash", "Python"],
+                "libs" => [
+                    "React",
+                    "JBrowse2",
+                    "TailwindCSS",
+                    "Vite",
+                    "conda",
+                    "bioconda",
+                    "WordPress",
+                ],
+            ],
         ],
-        "srcUrl" => "https://github.com/goldentree1/pletzer-lab-genome-browser",
-        "siteUrl" => "https://pletzerlab.com/genome-browser",
-    ],
-    [
-        "title" => "Command Menu 2 (GNOME Linux extension)",
-        "imgUrls" => ["imgs/gnome-command-menu-2-screenshot-1.jpg"],
-        "description" => "
-           An extension for the GNOME Linux desktop environment that adds a highly-customizable command menu to the top bar, allowing
-           users to quickly access apps, files, and custom scripts.
-        ",
-        "programmingLangs" => ["Javascript"],
-        "programmingLibs" => ["GJS (GNOME Javascript)", "GTK4", "Adw"],
-        "srcUrl" => "https://github.com/goldentree1/gnome-command-menu-2",
-        "downloadUrl" =>
-            "https://extensions.gnome.org/extension/8490/command-menu-2/",
-    ],
-    [
-        "title" => "Command Menu 2 (GNOME Linux extension)",
-        "imgUrls" => ["imgs/gnome-command-menu-2-screenshot-1.jpg"],
-        "description" => "
-           An extension for the GNOME Linux desktop environment that adds a highly-customizable command menu to the top bar, allowing
-           users to quickly access apps, files, and custom scripts.
-        ",
-        "programmingLangs" => ["Javascript"],
-        "programmingLibs" => ["GJS (GNOME Javascript)", "GTK4", "Adw"],
-        "srcUrl" => "https://github.com/goldentree1/gnome-command-menu-2",
-        "downloadUrl" =>
-            "https://extensions.gnome.org/extension/8490/command-menu-2/",
+        [
+            "title" => "Command Menu 2 (GNOME Linux extension)",
+            "type" => "open-source",
+            "categories" => ["Linux", "GNOME"],
+            "imgs" => ["assets/imgs/cmdmenu2-1.jpg"],
+            "description" => "
+                Extension for the GNOME Linux desktop environment that adds a highly-customizable menu to the top bar, allowing
+                quick access to frequently-used commands and apps. This was forked from another extension.",
+
+            "src" => "https://github.com/goldentree1/gnome-command-menu-2",
+            "download" =>
+                "https://extensions.gnome.org/extension/8490/command-menu-2/",
+            "tech" => [
+                "languages" => ["Javascript"],
+                "libs" => ["GJS", "Gtk4", "Adw"],
+            ],
+        ],
+        [
+            "title" => "St Clair Surf Forecast",
+            "type" => "personal",
+            "categories" => ["website", "database"],
+            "imgs" => ["assets/imgs/stcsurf1.png"],
+            "description" =>
+                "Surf forecast web-app for St Clair Beach. Data is updated daily with a cronjob via MetOcean's API. MongoDB is used to store and serve historic data.",
+            "src" => "https://github.com/goldentree1/stcsurf",
+            "dist" => "https://stcsurf.ebmedia.xyz",
+            "tech" => [
+                "languages" => ["Javascript"],
+                "libs" => ["React", "Next.js", "chart.js", "MongoDB"],
+            ],
+        ],
     ],
 ];
+
+$routes = [
+    "/" => "index.view.php",
+];
+
 // imports
 
 // ROUTING EXAMPLE BELOW (so we can add 404 etc..)
@@ -75,7 +97,7 @@ $projects = [
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Portfolio | Elliott Brown</title>
+    <title><?= $site_data["title"] ?></title>
 
     <!-- TODO: fonts here should be moved to a separate CSS file and not via some API -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -84,12 +106,17 @@ $projects = [
 
     <!-- TODO: JetBrains Mono font should be moved to a separate CSS file and not via some API -->
     <!--<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">-->
-<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="index.2.css">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="index.css">
+    <style>
+        <?php require "index.css"; ?>
+    </style>
 </head>
 
 <body>
-    <?php require "index.view.2.php"; ?>
-    <script src="index.2.js"></script>
+    <?php require "index.view.php"; ?>
+    <script>
+        <?php require "index.js"; ?>
+    </script>
 </body
 </html>
