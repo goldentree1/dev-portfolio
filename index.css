@@ -177,7 +177,7 @@ nav li img {
 /**--- HERO ---*/
 
 .hero-title {
-    margin-top: calc((100vh - 22.471rem) / 2);
+    margin-top: calc((100vh - 24.75rem) / 2);
     position: sticky;
     top: 0;
     display: flex;
@@ -192,7 +192,7 @@ nav li img {
 .hero-content {
     position: sticky;
     top: 0;
-    padding-bottom: calc((100vh - 22.471rem) / 2);
+    padding-bottom: calc((100vh - 24.75rem) / 2);
 }
 /** (100vh - header height (7rem) - (9.25rem) - 13.1875rem)*/
 
