@@ -26,7 +26,8 @@
         <h1>Elliott Brown</h1>
         <h2>[web developer / software engineer]</h2>
         <p class="hero-content">
-            Hi, I'm Elliott — a New Zealand-based software engineer focused on web technologies, scripting, and Linux systems.
+            Computer Science graduate with hands-on experience building end-to-end systems across web technologies, low-level languages, and Linux environments.
+            From frontend interfaces, to backend APIs and Linux servers: I do it all.
         </p>
     </div>
 
